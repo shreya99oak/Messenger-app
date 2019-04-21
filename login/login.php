@@ -1,8 +1,12 @@
+
  <?php
+session_start();
+
+
 $servername = "localhost";
 $username = "root";
 $password = "";
-$db="myapp";
+$db="login";
 // Create connection
 $conn = new mysqli($servername, $username, $password,$db);
 
@@ -25,21 +29,35 @@ echo "Connected successfully";
 
 echo '<h2>form data retrieved by using the $_REQUEST variable<h2/>';
 
-$message = $_REQUEST['msg'];
-
-
-// display the results
-//echo 'Your name is ' . $lastname .' ' . $firstname;
+$email=$_REQUEST['email'];
+$password=$_REQUEST['password'];
 
 
 
-$sql = "INSERT INTO my_messages (time_of_sending, date_of_sending, content)
-VALUES (curtime(), curdate(), '$message')";
 
-if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
-} else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-}
+
+   $sql = 'SELECT name, email, password FROM users';
+ 	$result = $conn->query($sql);
+	
+     
+   
+   while($row = $result->fetch_assoc()) {
+        if($row['email']==$email)
+        {
+        	if($row['password']==$password)
+        	{
+        		$_SESSION['myname'] = $row['name'];
+        		header('Location: ../contacts/my_contact.php');
+				exit;
+        	}
+        }
+    }
+   
+   echo "Fetched data successfully\n";
+   
+
+
+
+
 
 ?>

@@ -1,8 +1,10 @@
+
+
  <?php
 $servername = "localhost";
 $username = "root";
 $password = "";
-$db="myapp";
+$db="login";
 // Create connection
 $conn = new mysqli($servername, $username, $password,$db);
 
@@ -25,21 +27,27 @@ echo "Connected successfully";
 
 echo '<h2>form data retrieved by using the $_REQUEST variable<h2/>';
 
-$message = $_REQUEST['msg'];
-
+$name=$_REQUEST['name'];
+$email=$_REQUEST['email'];
+$password=$_REQUEST['password'];
 
 // display the results
 //echo 'Your name is ' . $lastname .' ' . $firstname;
 
 
 
-$sql = "INSERT INTO my_messages (time_of_sending, date_of_sending, content)
-VALUES (curtime(), curdate(), '$message')";
+$sql = "INSERT INTO users (name,email,password)
+VALUES ('$name','$email','$password')";
 
 if ($conn->query($sql) === TRUE) {
     echo "New record created successfully";
 } else {
     echo "Error: " . $sql . "<br>" . $conn->error;
 }
+
+
+header('Location: login.html');
+exit;
+
 
 ?>
